@@ -99,10 +99,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Egyptian phone number or email address",
     ),
     "recipientHint": MessageLookupByLibrary.simpleMessage(
-      "+20XXXXXXXXXX  or  name@email.com",
+      "+201XXXXXXXXX  or  name@email.com",
     ),
     "recipientInvalid": MessageLookupByLibrary.simpleMessage(
-      "Use an Egyptian number (+20XXXXXXXXXX) or an email.",
+      "Use an Egyptian number (+201XXXXXXXXX) or an email.",
     ),
     "recipientInvalidEmail": MessageLookupByLibrary.simpleMessage(
       "Enter a valid email address.",

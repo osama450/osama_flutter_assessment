@@ -349,10 +349,10 @@ class S {
     return Intl.message('Recipient', name: 'recipient', desc: '', args: []);
   }
 
-  /// `+20XXXXXXXXXX  or  name@email.com`
+  /// `+201XXXXXXXXX  or  name@email.com`
   String get recipientHint {
     return Intl.message(
-      '+20XXXXXXXXXX  or  name@email.com',
+      '+201XXXXXXXXX  or  name@email.com',
       name: 'recipientHint',
       desc: '',
       args: [],
@@ -379,10 +379,10 @@ class S {
     );
   }
 
-  /// `Use an Egyptian number (+20XXXXXXXXXX) or an email.`
+  /// `Use an Egyptian number (+201XXXXXXXXX) or an email.`
   String get recipientInvalid {
     return Intl.message(
-      'Use an Egyptian number (+20XXXXXXXXXX) or an email.',
+      'Use an Egyptian number (+201XXXXXXXXX) or an email.',
       name: 'recipientInvalid',
       desc: '',
       args: [],

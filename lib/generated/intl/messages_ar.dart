@@ -97,10 +97,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "رقم هاتف مصري أو بريد إلكتروني",
     ),
     "recipientHint": MessageLookupByLibrary.simpleMessage(
-      "+20XXXXXXXXXX  أو  name@email.com",
+      "+201XXXXXXXXX  أو  name@email.com",
     ),
     "recipientInvalid": MessageLookupByLibrary.simpleMessage(
-      "استخدم رقمًا مصريًا (+20XXXXXXXXXX) أو بريدًا إلكترونيًا.",
+      "استخدم رقمًا مصريًا (+201XXXXXXXXX) أو بريدًا إلكترونيًا.",
     ),
     "recipientInvalidEmail": MessageLookupByLibrary.simpleMessage(
       "أدخل بريدًا إلكترونيًا صالحًا.",

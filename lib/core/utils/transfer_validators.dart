@@ -6,7 +6,9 @@ abstract class TransferValidators {
   static const int minAmount = 100;
   static const int noteMaxLength = 150;
 
-  static final RegExp _phone = RegExp(r'^\+20\d{10}$');
+  // Egyptian mobile: +20 country code, then a mobile number starting with 1
+  // (010/011/012/015 → 1 + 9 digits). Rejects e.g. +200000000000.
+  static final RegExp _phone = RegExp(r'^\+201\d{9}$');
   static final RegExp _email = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
   static final RegExp _digits = RegExp(r'^\d+$');
 
