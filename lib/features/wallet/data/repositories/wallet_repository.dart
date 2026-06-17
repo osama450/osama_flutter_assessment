@@ -85,10 +85,10 @@ class MockWalletRepository implements WalletRepository {
   Future<Either<Failure, Map<TransactionFilter, int>>>
   getTransactionCounts() async {
     try {
-      final txns = WalletFakeData.transactions;
+      final transactions = WalletFakeData.transactions;
       final counts = <TransactionFilter, int>{
         for (final f in TransactionFilter.values)
-          f: txns.where((t) => f.matches(t.type)).length,
+          f: transactions.where((t) => f.matches(t.type)).length,
       };
       return Right(counts);
     } catch (e) {
@@ -104,15 +104,6 @@ class MockWalletRepository implements WalletRepository {
   }) async {
     try {
       await Future<void>.delayed(const Duration(milliseconds: 900));
-
-      final r = recipient.trim().toLowerCase();
-      if (r == '+20000000000' || r.contains('notfound')) {
-        return Left(Failure('Recipient not found', 'RECIPIENT_NOT_FOUND'));
-      }
-
-      if (amount > _balance.totalPoints) {
-        return Left(Failure('Insufficient balance', 'INSUFFICIENT_BALANCE'));
-      }
 
       _balance = _balance.copyWith(
         totalPoints: _balance.totalPoints - amount,
