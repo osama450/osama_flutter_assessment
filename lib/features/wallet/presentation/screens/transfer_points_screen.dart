@@ -26,9 +26,6 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
     with SecureScreenMixin {
   final _formKey = GlobalKey<FormBuilderState>();
 
-  int get _balance =>
-      context.read<WalletBloc>().state.balance?.totalPoints ?? 0;
-
   Future<void> _showSuccessDialog(
     BuildContext context,
     TransferState state,
@@ -81,7 +78,7 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 480),
-                child: _form(context, theme, l, state),
+                child: _TransferForm(formKey: _formKey, state: state),
               ),
             ),
           ),
@@ -89,9 +86,19 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
       },
     );
   }
+}
 
-  Widget _form(BuildContext context, dynamic theme, S l, TransferState state) {
-    final balance = _balance;
+class _TransferForm extends StatelessWidget {
+  const _TransferForm({required this.formKey, required this.state});
+
+  final GlobalKey<FormBuilderState> formKey;
+  final TransferState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = S.of(context);
+    final balance =
+        context.read<WalletBloc>().state.balance?.totalPoints ?? 0;
     final rErr = TransferValidators.recipient(state.recipient);
     final aErr = TransferValidators.amount(state.amount, balance);
     final valid =
@@ -113,11 +120,11 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
           child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _balanceReminder(theme, l, balance),
+                  _BalanceReminder(balance: balance),
                   const SizedBox(height: 20),
                   TextInput(
                     name: 'recipient',
@@ -145,7 +152,7 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
                     ),
                   ),
                   const SizedBox(height: 10),
-                  _quickChips(l, balance, state),
+                  _QuickChips(balance: balance, state: state),
                   const SizedBox(height: 16),
                   TextInput(
                     name: 'note',
@@ -173,8 +180,17 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
       ],
     );
   }
+}
 
-  Widget _balanceReminder(dynamic theme, S l, int balance) {
+class _BalanceReminder extends StatelessWidget {
+  const _BalanceReminder({required this.balance});
+
+  final int balance;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.appTheme;
+    final l = S.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
@@ -223,8 +239,17 @@ class _TransferPointsScreenState extends State<TransferPointsScreen>
       ),
     );
   }
+}
 
-  Widget _quickChips(S l, int balance, TransferState state) {
+class _QuickChips extends StatelessWidget {
+  const _QuickChips({required this.balance, required this.state});
+
+  final int balance;
+  final TransferState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = S.of(context);
     final entries = <(String, int)>[
       (_fmt(100), 100),
       (_fmt(500), 500),
@@ -371,8 +396,7 @@ class _TransferSuccessDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        _adaptiveAction(
-          context,
+        _AdaptiveAction(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l.backToWallet),
         ),
@@ -381,16 +405,20 @@ class _TransferSuccessDialog extends StatelessWidget {
   }
 }
 
-Widget _adaptiveAction(
-  BuildContext context, {
-  required VoidCallback onPressed,
-  required Widget child,
-}) {
-  switch (Theme.of(context).platform) {
-    case TargetPlatform.iOS:
-    case TargetPlatform.macOS:
-      return CupertinoDialogAction(onPressed: onPressed, child: child);
-    default:
-      return TextButton(onPressed: onPressed, child: child);
+class _AdaptiveAction extends StatelessWidget {
+  const _AdaptiveAction({required this.onPressed, required this.child});
+
+  final VoidCallback onPressed;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (Theme.of(context).platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return CupertinoDialogAction(onPressed: onPressed, child: child);
+      default:
+        return TextButton(onPressed: onPressed, child: child);
+    }
   }
 }

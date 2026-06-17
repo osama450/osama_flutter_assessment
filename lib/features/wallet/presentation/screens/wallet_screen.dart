@@ -134,9 +134,6 @@ class _WalletScreenState extends State<WalletScreen> {
         },
         child: RefreshIndicator(
           onRefresh: _refresh,
-          // A single CustomScrollView per layout keeps the whole screen
-          // scrollable while the transaction list virtualizes through
-          // SliverList.builder (only on-screen rows are built).
           child: BlocBuilder<WalletBloc, WalletState>(
             buildWhen: (p, c) =>
                 p.transactions != c.transactions ||
@@ -144,19 +141,49 @@ class _WalletScreenState extends State<WalletScreen> {
                 p.hasReachedMax != c.hasReachedMax,
             builder: (context, state) => ResponsiveLayout(
               useShortestSide: false,
-              phone: (c) => _mobile(c, state),
-              tablet: (c) => _wide(c, state),
-              desktop: (c) => _wide(c, state),
+              phone: (c) => _MobileLayout(
+                scrollController: _scrollController,
+                state: state,
+                onRefresh: _refresh,
+                onFilter: _onFilter,
+              ),
+              tablet: (c) => _WideLayout(
+                scrollController: _scrollController,
+                state: state,
+                onRefresh: _refresh,
+                onFilter: _onFilter,
+              ),
+              desktop: (c) => _WideLayout(
+                scrollController: _scrollController,
+                state: state,
+                onRefresh: _refresh,
+                onFilter: _onFilter,
+              ),
             ),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _mobile(BuildContext context, WalletState state) {
+class _MobileLayout extends StatelessWidget {
+  const _MobileLayout({
+    required this.scrollController,
+    required this.state,
+    required this.onRefresh,
+    required this.onFilter,
+  });
+
+  final ScrollController scrollController;
+  final WalletState state;
+  final Future<void> Function() onRefresh;
+  final ValueChanged<TransactionFilter> onFilter;
+
+  @override
+  Widget build(BuildContext context) {
     return CustomScrollView(
-      controller: _scrollController,
+      controller: scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
         SliverPadding(
@@ -165,11 +192,11 @@ class _WalletScreenState extends State<WalletScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _balanceSection(),
+                const _BalanceSection(),
                 const SizedBox(height: 20),
-                _activityHeader(context),
+                _ActivityHeader(onRefresh: onRefresh),
                 const SizedBox(height: 10),
-                _chips(),
+                _ActivityChips(onSelected: onFilter),
                 const SizedBox(height: 12),
               ],
             ),
@@ -177,13 +204,28 @@ class _WalletScreenState extends State<WalletScreen> {
         ),
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-          sliver: _activitySliver(context, state),
+          sliver: _ActivitySliver(state: state, onRetry: onRefresh),
         ),
       ],
     );
   }
+}
 
-  Widget _wide(BuildContext context, WalletState state) {
+class _WideLayout extends StatelessWidget {
+  const _WideLayout({
+    required this.scrollController,
+    required this.state,
+    required this.onRefresh,
+    required this.onFilter,
+  });
+
+  final ScrollController scrollController;
+  final WalletState state;
+  final Future<void> Function() onRefresh;
+  final ValueChanged<TransactionFilter> onFilter;
+
+  @override
+  Widget build(BuildContext context) {
     final balanceWidth = context.isDesktop ? 400.0 : 300.0;
     return SizedBox.expand(
       child: Padding(
@@ -191,25 +233,25 @@ class _WalletScreenState extends State<WalletScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(width: balanceWidth, child: _balanceSection()),
+            SizedBox(width: balanceWidth, child: const _BalanceSection()),
             const SizedBox(width: 24),
             Expanded(
               child: CustomScrollView(
-                controller: _scrollController,
+                controller: scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _activityHeader(context),
+                        _ActivityHeader(onRefresh: onRefresh),
                         const SizedBox(height: 10),
-                        _chips(),
+                        _ActivityChips(onSelected: onFilter),
                         const SizedBox(height: 12),
                       ],
                     ),
                   ),
-                  _activitySliver(context, state),
+                  _ActivitySliver(state: state, onRetry: onRefresh),
                   const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 ],
               ),
@@ -219,8 +261,15 @@ class _WalletScreenState extends State<WalletScreen> {
       ),
     );
   }
+}
 
-  Widget _activityHeader(BuildContext context) {
+class _ActivityHeader extends StatelessWidget {
+  const _ActivityHeader({required this.onRefresh});
+
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = context.appTheme;
     return Row(
       children: [
@@ -234,15 +283,20 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
         ),
         IconButton(
-          onPressed: _refresh,
+          onPressed: onRefresh,
           icon: Icon(Icons.refresh_rounded, color: theme.primary),
           tooltip: S.of(context).retry,
         ),
       ],
     );
   }
+}
 
-  Widget _balanceSection() {
+class _BalanceSection extends StatelessWidget {
+  const _BalanceSection();
+
+  @override
+  Widget build(BuildContext context) {
     return BlocSelector<WalletBloc, WalletState, (PointsBalance?, bool)>(
       selector: (s) => (s.balance, s.status.isInProgress),
       builder: (context, vm) {
@@ -252,19 +306,34 @@ class _WalletScreenState extends State<WalletScreen> {
       },
     );
   }
+}
 
-  Widget _chips() {
+class _ActivityChips extends StatelessWidget {
+  const _ActivityChips({required this.onSelected});
+
+  final ValueChanged<TransactionFilter> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<WalletBloc, WalletState>(
       buildWhen: (p, c) => p.filter != c.filter || p.counts != c.counts,
       builder: (context, state) => TransactionFilterChips(
         selected: state.filter,
         counts: state.counts,
-        onSelected: _onFilter,
+        onSelected: onSelected,
       ),
     );
   }
+}
 
-  Widget _activitySliver(BuildContext context, WalletState state) {
+class _ActivitySliver extends StatelessWidget {
+  const _ActivitySliver({required this.state, required this.onRetry});
+
+  final WalletState state;
+  final Future<void> Function() onRetry;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = context.appTheme;
     final txEmpty = state.transactions.isEmpty;
 
@@ -277,7 +346,7 @@ class _WalletScreenState extends State<WalletScreen> {
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: WalletErrorView(
             message: state.errorMessage,
-            onRetry: _refresh,
+            onRetry: onRetry,
           ),
         ),
       );
