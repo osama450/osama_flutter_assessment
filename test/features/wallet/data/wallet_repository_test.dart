@@ -1,10 +1,8 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shop_plus/core/errors/failures.dart';
 import 'package:shop_plus/features/wallet/data/models/points_balance.dart';
 import 'package:shop_plus/features/wallet/data/models/transaction.dart';
 import 'package:shop_plus/features/wallet/data/models/transaction_type.dart';
-import 'package:shop_plus/features/wallet/data/models/transactions_page.dart';
 import 'package:shop_plus/features/wallet/data/repositories/wallet_repository.dart';
 
 void main() {
@@ -35,13 +33,17 @@ void main() {
     });
 
     test('last page has no more, beyond-range page is empty', () async {
-      final last = (await repository.getTransactions(page: 3, pageSize: 10))
-          .getOrElse(() => throw Exception());
+      final last = (await repository.getTransactions(
+        page: 3,
+        pageSize: 10,
+      )).getOrElse(() => throw Exception());
       expect(last.items.length, 10);
       expect(last.hasMore, isFalse);
 
-      final beyond = (await repository.getTransactions(page: 4, pageSize: 10))
-          .getOrElse(() => throw Exception());
+      final beyond = (await repository.getTransactions(
+        page: 4,
+        pageSize: 10,
+      )).getOrElse(() => throw Exception());
       expect(beyond.items, isEmpty);
     });
   });
@@ -53,10 +55,7 @@ void main() {
       )).getOrElse(() => throw Exception());
 
       expect(page.totalCount, 6);
-      expect(
-        page.items.every((t) => t.type == TransactionType.earn),
-        isTrue,
-      );
+      expect(page.items.every((t) => t.type == TransactionType.earn), isTrue);
     });
 
     test('filter transfer groups TRANSFER_IN + TRANSFER_OUT', () async {
