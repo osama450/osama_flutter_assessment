@@ -11,16 +11,14 @@ clean, testable architecture and a fully mocked data layer (no backend required 
 
 ## Screenshots
 
-All captures live in [`docs/screenshots/`](docs/screenshots). The table references the
-filenames below — drop your device captures in that folder using these names and they
-render automatically.
+All captures live in [`docs/screenshots/`](docs/screenshots).
 
 |                       | Wallet                                                                  | Transfer points                                                               |
 | --------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Phone — EN (LTR)**  | <img src="docs/screenshots/phone_wallet_en.png" width="220"/>           | <img src="docs/screenshots/phone_transfer_en.png" width="220"/>               |
-| **Phone — AR (RTL)**  | <img src="docs/screenshots/phone_wallet_ar.png" width="220"/>           | <img src="docs/screenshots/phone_transfer_ar.png" width="220"/>               |
-| **Tablet**            | <img src="docs/screenshots/tablet_wallet.png" width="320"/>             | <img src="docs/screenshots/tablet_transfer.png" width="320"/>                 |
-| **Desktop / Web (dark)** | <img src="docs/screenshots/desktop_wallet_dark.png" width="420"/>    | <img src="docs/screenshots/desktop_transfer_dark.png" width="420"/>           |
+| **Phone — EN (LTR)**  | <img src="docs/screenshots/iphone_2.png" width="220"/>                  | <img src="docs/screenshots/iphone_1.png" width="220"/>                        |
+| **Phone — AR (RTL)**  | <img src="docs/screenshots/android_ar_1.png" width="220"/>              | <img src="docs/screenshots/android_ar_2.png" width="220"/>                    |
+| **Tablet**            | <img src="docs/screenshots/tablet_1.png" width="320"/>                  | <img src="docs/screenshots/tablet_2.png" width="320"/>                        |
+| **Desktop / Web (dark)** | <img src="docs/screenshots/web_1.jpeg" width="420"/>                 | <img src="docs/screenshots/web_2.jpeg" width="420"/>                          |
 
 > Same screen, same code — only the layout reflows: phone is single-column, tablet/desktop
 > split into two columns. The all-device set above is the proof of the responsive design.
