@@ -623,7 +623,7 @@ class AppColors {
     },
   );
 
-  // --- Rafeeq Brand Design Tokens (2026 guideline) ---
+  // --- shop_plus Brand Design Tokens (2026 guideline) ---
   static const Color ink = Color(0xFF0D1F18);
   static const Color subink = Color(0xFF3D4F47);
   static const Color mute = Color(0xFF6B7A73);

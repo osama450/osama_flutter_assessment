@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "rafeeq-app",
+            "name": "shop-plus",
             "request": "launch",
             "type": "dart",
             "toolArgs": [
@@ -13,7 +13,7 @@
             ]
         },
         {
-            "name": "rafeeq-app (profile mode)",
+            "name": "shop-plus (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
@@ -22,7 +22,7 @@
             ]
         },
         {
-            "name": "rafeeq-app (release mode)",
+            "name": "shop-plus (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
