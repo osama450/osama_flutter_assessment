@@ -1,0 +1,96 @@
+name: shop_plus
+description: "A new Flutter project."
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  dio: ^5.9.2
+  flutter_bloc: ^9.1.1
+  get_it: ^9.2.1
+  skeletonizer: ^2.1.3
+  intl: ^0.20.2
+  injectable: ^3.0.0
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
+  dartz: ^0.10.1
+  separated_column: ^3.0.4
+  cached_network_image: ^3.4.1
+  top_snackbar_flutter: ^3.3.0
+  flutter_secure_storage: ^10.0.0
+  flutter_form_builder: ^10.3.0+1
+  screen_protector: ^1.5.2
+
+
+  flutter_localizations:
+    sdk: flutter
+  go_router: ^17.3.0
+  equatable: ^2.0.8
+  bloc_concurrency: ^0.3.0
+  json_annotation: ^4.12.0
+  responsive_wrapper: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  build_runner: 2.13.1
+  injectable_generator: ^3.0.2
+  hive_ce_generator: ^1.11.1
+
+  flutter_lints: ^6.0.0
+  json_serializable: ^6.14.0
+  intl_utils: ^2.8.14
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.5
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/fonts/english/
+    - assets/fonts/arabic/
+
+  fonts:
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/english/Rubik-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/english/Rubik-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/english/Rubik-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/english/Rubik-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/english/Rubik-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/english/Rubik-Light.ttf
+          weight: 300
+
+    - family: Zain
+      fonts:
+        - asset: assets/fonts/arabic/Zain-Black.ttf
+          weight: 900
+        - asset: assets/fonts/arabic/Zain-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/arabic/Zain-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/arabic/Zain-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/arabic/Zain-Light.ttf
+          weight: 300
+        - asset: assets/fonts/arabic/Zain-ExtraLight.ttf
+          weight: 200
+
+flutter_intl:
+  enabled: true
